@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZX BOSS | Cyber Legend</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #00ff00;
+            --secondary-color: #00aa00;
+            --accent-color: #008800;
+            --text-color: #ffffff;
+            --bg-color: #000000;
+            --card-bg: rgba(10, 20, 10, 0.9);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Share Tech Mono', monospace;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            background-image: url('https://images.unsplash.com/photo-1544890225-2f3faec4cd60?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1930&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: -1;
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s ease;
+        }
+
+        .loading-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--primary-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 10px;
+            background-color: #111;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid var(--primary-color);
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary-color);
+            animation: loading 3s ease-in-out forwards;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* Main Content */
+        .bio-container {
+            background: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 25px;
+            max-width: 800px;
+            width: 90%;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+            margin: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            animation: rgb-glow 5s infinite alternate;
+        }
+
+        @keyframes rgb-glow {
+            0% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
+            25% { box-shadow: 0 0 20px rgba(0, 255, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(0, 0, 255, 0.5); }
+            75% { box-shadow: 0 0 20px rgba(255, 255, 0, 0.5); }
+            100% { box-shadow: 0 0 20px rgba(255, 0, 255, 0.5); }
+        }
+
+        .bio-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--primary-color);
+            position: relative;
+        }
+
+        .cyber-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 36px;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+        }
+
+        .cyber-title.green {
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+            animation: text-glow-green 2s infinite alternate;
+        }
+
+        @keyframes text-glow-green {
+            0% { text-shadow: 0 0 5px rgba(0, 255, 0, 0.7), 0 0 10px rgba(0, 255, 0, 0.5); }
+            100% { text-shadow: 0 0 15px rgba(0, 255, 0, 1), 0 0 20px rgba(0, 255, 0, 0.8), 0 0 30px rgba(0, 255, 0, 0.6); }
+        }
+
+        .cyber-title.red {
+            color: #ff0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+            animation: text-glow-red 2s infinite alternate;
+            margin-top: -10px;
+        }
+
+        @keyframes text-glow-red {
+            0% { text-shadow: 0 0 5px rgba(255, 0, 0, 0.7), 0 0 10px rgba(255, 0, 0, 0.5); }
+            100% { text-shadow: 0 0 15px rgba(255, 0, 0, 1), 0 0 20px rgba(255, 0, 0, 0.8), 0 0 30px rgba(255, 0, 0, 0.6); }
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-color);
+            margin: 20px auto;
+            overflow: hidden;
+            box-shadow: 0 0 20px var(--primary-color);
+            position: relative;
+            animation: rgb-glow 5s infinite alternate;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .bio-header .tagline {
+            color: var(--secondary-color);
+            font-style: italic;
+            font-size: 18px;
+        }
+
+        .bio-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(20, 30, 20, 0.7);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+            animation: rgb-border 5s infinite alternate;
+        }
+
+        @keyframes rgb-border {
+            0% { border-left-color: rgba(255, 0, 0, 0.8); }
+            25% { border-left-color: rgba(0, 255, 0, 0.8); }
+            50% { border-left-color: rgba(0, 0, 255, 0.8); }
+            75% { border-left-color: rgba(255, 255, 0, 0.8); }
+            100% { border-left-color: rgba(255, 0, 255, 0.8); }
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .section-title i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            margin-bottom: 8px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: var(--primary-color);
+            min-width: 150px;
+        }
+
+        .info-value {
+            color: var(--text-color);
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .skill-tag {
+            background: rgba(0, 255, 0, 0.2);
+            color: var(--text-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--primary-color);
+            font-size: 14px;
+        }
+
+        .quote {
+            font-style: italic;
+            text-align: center;
+            padding: 15px;
+            margin: 20px 0;
+            background: rgba(0, 255, 0, 0.1);
+            border-left: 4px solid var(--primary-color);
+            border-right: 4px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .social-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(10, 20, 30, 0.8);
+            border-radius: 10px;
+            text-align: center;
+            animation: rgb-glow 5s infinite alternate;
+        }
+
+        .social-title {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 50%;
+            font-size: 24px;
+            transition: all 0.3s;
+            border: 2px solid var(--primary-color);
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.5);
+        }
+
+        .social-link.facebook:hover { background: #3b5998; }
+        .social-link.youtube:hover { background: #ff0000; }
+        .social-link.tiktok:hover { background: #000000; }
+        .social-link.twitter:hover { background: #1da1f2; }
+        .social-link.linkedin:hover { background: #0077b5; }
+        .social-link.github:hover { background: #333333; }
+        .social-link.telegram:hover { background: #0088cc; }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--primary-color);
+            color: var(--secondary-color);
+            font-size: 14px;
+        }
+
+        /* Matrix Rain Effect */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .matrix-char {
+            position: absolute;
+            color: var(--primary-color);
+            font-size: 18px;
+            font-family: 'Share Tech Mono', monospace;
+            animation: fall linear forwards;
+            text-shadow: 0 0 5px var(--primary-color);
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* Audio Note */
+        .audio-note {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            color: var(--primary-color);
+            font-size: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px;
+            border-radius: 5px;
+            z-index: 10;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+            margin: 15px 0;
+        }
+
+        @media (max-width: 768px) {
+            .bio-container {
+                padding: 15px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-item {
+                flex-direction: column;
+            }
+            
+            .info-label {
+                min-width: auto;
+                margin-bottom: 5px;
+            }
+            
+            .cyber-title {
+                font-size: 28px;
+            }
+            
+            .loading-text {
+                font-size: 18px;
+            }
+            
+            .loading-bar {
+                width: 250px;
+            }
+            
+            .social-links {
+                gap: 10px;
+            }
+            
+            .social-link {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .bio-container {
+                padding: 10px;
+            }
+            
+            .bio-section {
+                padding: 10px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+            
+            .cyber-title {
+                font-size: 22px;
+            }
+            
+            .profile-image {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .social-links {
+                gap: 8px;
+            }
+            
+            .social-link {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+            
+            .loading-text {
+                font-size: 16px;
+            }
+            
+            .loading-bar {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-text">DARK SYSTEM INITIALIZATION...........................</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+
+    <!-- Matrix Rain Effect -->
+    <div class="matrix-rain" id="matrixRain"></div>
+    
+    <!-- Bio Container -->
+    <div class="bio-container" id="mainContent">
+        <div class="bio-header">
+            <div class="cyber-title green">💀 THE LEGEND ENTRY💥</div>
+            <div class="cyber-title red">ZX BOSS ⁉️</div>
+            
+            <div class="profile-image">
+                <img src="https://i.postimg.cc/T2gf80SH/download-37.jpg" alt="ZX BOSS">
+            </div>
+            
+            <p class="tagline">Cyber Legend 🤝 ‼️</p>
+        </div>
+        
+        <!-- Personal Information Section -->
+        <div class="bio-section">
+            <div class="section-title">
+                <i class="fas fa-user-secret"></i> Personal Information
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Name:</div>
+                    <div class="info-value">ZX BOSS 💥⁉️‼️</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Country:</div>
+                    <div class="info-value">Bangladesh 🇧🇩</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Age:</div>
+                    <div class="info-value">Private 💀</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Occupation:</div>
+                    <div class="info-value">Entrepreneur & CYBER Legend</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Academic:</div>
+                    <div class="info-value">Private</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Relationship:</div>
+                    <div class="info-value">Single by Choice 😎</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Status:</div>
+                    <div class="info-value">Need - Not Want ☄️</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Ex 🐍:</div>
+                    <div class="info-value">000000 - Because no one dared 🛡😂</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Religion:</div>
+                    <div class="info-value">Muslim - ALAHAMDULLIAH</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label"></div>
+                    <div class="info-value">La Ilaha Illallah ☪️</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Languages:</div>
+                    <div class="info-value">Bangla / Hindi / English ‼️</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <!-- Favorites & Interests Section -->
+        <div class="bio-section">
+            <div class="section-title">
+                <i class="fas fa-heart"></i> Favorites & Interests
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Dream:</div>
+                    <div class="info-value">SECRET (T) 🥱</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Favorite Game:</div>
+                    <div class="info-value">Old Free Fire ⭐️</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Favorite Apps:</div>
+                    <div class="info-value">Telegram, KALI LINUX, TERMUX ‼️💥</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Idol:</div>
+                    <div class="info-value">HAZRAT MUHAMMAD SALLALLAHU ALAIHI WASALLAM ❤️‍🔥</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <!-- Skills & Expertise Section -->
+        <div class="bio-section">
+            <div class="section-title">
+                <i class="fas fa-code"></i> Skills & Expertise
+            </div>
+            <div class="skills-container">
+                <span class="skill-tag">Coding Developer</span>
+                <span class="skill-tag">Python Developer</span>
+                <span class="skill-tag">Cracking</span>
+                <span class="skill-tag">Bot Making</span>
+                <span class="skill-tag">Cyber Security</span>
+                <span class="skill-tag">Software Development</span>
+                <span class="skill-tag">Ethical Hacking</span>
+                <span class="skill-tag">Network Security</span>
+            </div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <!-- Mindset & Philosophy Section -->
+        <div class="bio-section">
+            <div class="section-title">
+                <i class="fas fa-brain"></i> Mindset & Philosophy
+            </div>
+            <div class="quote">
+                "There is no rule - I am the system 👁"
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Proud Of:</div>
+                    <div class="info-value">My Name, MY RELIGION, MY POWER, MY KNOWLEDGE 💣</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Lifestyle:</div>
+                    <div class="info-value">Living like a sin - but wholeheartedly ☠️</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <!-- Final Words Section -->
+        <div class="bio-section">
+            <div class="section-title">
+                <i class="fas fa-comment-dots"></i> Final Words
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">For Lovers:</div>
+                    <div class="info-value">Thank you so much ❤️‍🔥</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">For Haters:</div>
+                    <div class="info-value">Fuck your mom 💀</div>
+                </div>
+            </div>
+            <div class="quote">
+                Judge me when you're perfect ❄️<br>
+                Till then - keep my name out of your mouth 🔥
+            </div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <!-- Business & Contact Section -->
+        <div class="bio-section">
+            <div class="section-title">
+                <i class="fas fa-briefcase"></i> Business & Contact
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Owner at:</div>
+                    <div class="info-value">ZX Advance LTD ✅‼️</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label"></div>
+                    <div class="info-value">ZX BOTs ✅‼️</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label"></div>
+                    <div class="info-value">ZX TOOLS ✅‼️</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Telegram:</div>
+                    <div class="info-value">ZX BOSS 1 🌟</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Disclaimer:</div>
+                    <div class="info-value">I DON'T SUPPORT ANY ILLEGAL ACTIVITIES ⛔️</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Ethics:</div>
+                    <div class="info-value">Always stay legal and ethical 💀</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="social-section">
+            <div class="social-title">CONNECT WITH ME</div>
+            <div class="social-links">
+                <a href="#" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-link youtube"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="social-link tiktok"><i class="fab fa-tiktok"></i></a>
+                <a href="#" class="social-link twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-link linkedin"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-link github"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-link telegram"><i class="fab fa-telegram"></i></a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>TEAM #ZX_BOSS_ARMY 👑 | Cyber Security Specialist</p>
+            <p>❤️ THANKS FOR VISITING! GIVE A REACTION IF YOU LIKE MY BIO! 😘</p>
+        </div>
+    </div>
+    
+    <!-- Audio Note -->
+    <div class="audio-note">SOUND: ON 🔊</div>
+    
+    <!-- Audio Element -->
+    <audio id="bgAudio" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-hacker-1-284.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // Loading screen and content display
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingScreen = document.getElementById('loading-screen');
+            const mainContent = document.getElementById('mainContent');
+            const audio = document.getElementById('bgAudio');
+            
+            // Show main content after loading
+            setTimeout(function() {
+                loadingScreen.style.opacity = '0';
+                setTimeout(function() {
+                    loadingScreen.style.display = 'none';
+                    mainContent.style.opacity = '1';
+                    mainContent.style.transform = 'translateY(0)';
+                    
+                    // Play audio after user interaction (required by browsers)
+                    document.body.addEventListener('click', function() {
+                        audio.play().catch(e => console.log('Audio play failed:', e));
+                    }, { once: true });
+                }, 1000);
+            }, 3000);
+            
+            // Matrix rain effect
+            const matrixRain = document.getElementById('matrixRain');
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*';
+            
+            function createMatrixChar() {
+                const char = document.createElement('div');
+                char.className = 'matrix-char';
+                char.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+                char.style.left = Math.random() * 100 + 'vw';
+                char.style.animationDuration = (Math.random() * 5 + 3) + 's';
+                char.style.fontSize = (Math.random() * 10 + 14) + 'px';
+                char.style.opacity = Math.random() * 0.7 + 0.3;
+                matrixRain.appendChild(char);
+                
+                // Remove character after animation
+                setTimeout(() => {
+                    char.remove();
+                }, 8000);
+            }
+            
+            // Create matrix characters periodically
+            setInterval(createMatrixChar, 100);
+            
+            // Add some initial characters
+            for (let i = 0; i < 50; i++) {
+                setTimeout(createMatrixChar, i * 100);
+            }
+        });
+    </script>
+</body>
+</html>
